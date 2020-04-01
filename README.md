@@ -10,7 +10,7 @@
 <img src="images/checkers_demo.gif" width="200" />
 
 ## Running locally
-This project is written in [Go](golang.org) using [discordgo](https://github.com/bwmarrin/discordgo) which also happens to be it's only external dependency. Different from what you might expect, there is **no database**. All game states are stored in the messages sent. 
+This project is written in [Go](golang.org) using [discordgo](https://github.com/bwmarrin/discordgo).
 1. Clone the repository
 2. Install dependencies by running `go get github.com/bwmarrin/discordgo`
 3. If you haven't already, go to the [Discord developer portal](https://discordapp.com/developers/applications) and create a new application to obtain a token.
