@@ -48,7 +48,7 @@ func getXFromReaction(e *discordgo.Emoji) uint8 {
 }
 
 // Selects a piece and shows the moves on the board
-func selectPiece(s *discordgo.Session, c string, opponentID string, game *logic.Game, square *logic.Square, moves *[]logic.Move, jumpsOnly bool) {
+func selectPiece(s *discordgo.Session, c string, m string, opponentID string, game *logic.Game, square *logic.Square, moves *[]logic.Move, jumpsOnly bool) {
 	// Makes a board with moves and a slice of reactions to put on the message
 	board := []rune(game.Board)
 	var reactions []string
@@ -75,6 +75,8 @@ func selectPiece(s *discordgo.Session, c string, opponentID string, game *logic.
 	for _, e := range reactions {
 		s.MessageReactionAdd(gamemsg.ChannelID, gamemsg.ID, e)
 	}
+
+	s.ChannelMessageDelete(c, m) // The reason we delete instead of edit is to get around not being able to clear reactions
 }
 
 // Handles all selection related reactions
@@ -139,7 +141,6 @@ func selectReactionHandler(s *discordgo.Session, r *discordgo.MessageReactionAdd
 		}
 
 		// If all is good, then we can get the available moves
-		selectPiece(s, r.ChannelID, opponentID, &game, &square, &moves, false)
-		s.ChannelMessageDelete(r.ChannelID, r.MessageID) // The reason we delete instead of edit is to get around not being able to clear reactions
+		selectPiece(s, r.ChannelID, r.MessageID, opponentID, &game, &square, &moves, false)
 	}
 }

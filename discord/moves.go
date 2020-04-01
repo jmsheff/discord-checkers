@@ -79,13 +79,15 @@ func moveReactionHandler(s *discordgo.Session, r *discordgo.MessageReactionAdd, 
 				Description: "You lost the game against " + formatUser(user) + ". Better luck next time!",
 				Color:       c_RED,
 			})
+
+			s.ChannelMessageDelete(r.ChannelID, r.MessageID)
 			return
 		}
 
 		// Check for double jump
 		if doubleJumps, err := updatedSquare.GetAvailableMoves(&game, true); err == nil {
 			// Selects the piece at the updated location and provides only double jump moves
-			selectPiece(s, r.ChannelID, opponentID, &game, &move.S, &doubleJumps, true)
+			selectPiece(s, r.ChannelID, r.MessageID, opponentID, &game, &move.S, &doubleJumps, true)
 			return
 		}
 	}
