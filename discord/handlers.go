@@ -21,7 +21,7 @@ func CommandsHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// Get the arguments
 	args := strings.Split(m.Content, " ")[1:]
 	// Ensure valid command
-	if len(args) < 0 {
+	if len(args) == 0 {
 		s.ChannelMessageSend(m.ChannelID, errorMessage("Command missing", "For a list of commands type !checkers help"))
 		return
 	}
