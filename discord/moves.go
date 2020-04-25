@@ -105,6 +105,14 @@ func moveReactionHandler(s *discordgo.Session, r *discordgo.MessageReactionAdd, 
 
 	// Send game to opponent for their move
 	opponentDM, err := s.UserChannelCreate(opponentID)
+	if err != nil {
+		s.ChannelMessageEdit(r.ChannelID, r.MessageID, errorMessage("Bot error", "Could not open DM with opponent"))
+		return
+	}
 	opponentMsg, err := s.ChannelMessageSendEmbed(opponentDM.ID, gameEmbed(s, "select", r.UserID, &game, game.Board, false))
+	if err != nil {
+		s.ChannelMessageEdit(r.ChannelID, r.MessageID, errorMessage("Bot error", "Could not send opponent message"))
+		return
+	}
 	addSelectReactions(s, opponentMsg.ChannelID, opponentMsg.ID, &game)
 }
